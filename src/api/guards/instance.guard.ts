@@ -16,7 +16,11 @@ async function getInstance(instanceName: string) {
       return exists || keyExists;
     }
 
-    return exists || (await prismaRepository.instance.findMany({ where: { name: instanceName } })).length > 0;
+    if (configService.get('DATABASE_ENABLED') === 'true') {
+      return exists || (await prismaRepository.instance.findMany({ where: { name: instanceName } })).length > 0;
+    } else {
+      return exists;
+    }
   } catch (error) {
     throw new InternalServerErrorException(error?.toString());
   }
