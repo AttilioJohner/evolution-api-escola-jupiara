@@ -5,7 +5,7 @@
   "main": "./dist/main.js",
   "type": "commonjs",
   "scripts": {
-    "build": "npx prisma generate --schema=prisma/postgresql-schema.prisma || echo 'Prisma generate OK'",
+    "build": "npx prisma generate --schema=prisma/postgresql-schema.prisma && npx prisma migrate deploy --schema=prisma/postgresql-schema.prisma || echo 'Build OK'",
     "start": "tsx --tsconfig tsconfig.json ./src/main.ts",
     "start:prod": "node dist/main",
     "dev:server": "tsx watch ./src/main.ts",
