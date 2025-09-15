@@ -371,6 +371,11 @@ export class InstanceController {
     const env = this.configService.get<Auth>('AUTHENTICATION').API_KEY;
 
     if (env.KEY !== key) {
+      // Se banco desabilitado, só aceita API key global
+      if (this.configService.get('DATABASE_ENABLED') !== 'true') {
+        throw new UnauthorizedException('Database disabled - use global API key');
+      }
+      
       const instancesByKey = await this.prismaRepository.instance.findMany({
         where: {
           token: key,
