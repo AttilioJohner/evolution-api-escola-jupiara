@@ -1,0 +1,25 @@
+# CONFIGURAÇÕES SUPABASE - ESCOLA JUPIARA
+# ======================================
+
+PROJECT_ID: rvppxdhrahcwiwrrwwaz
+PASSWORD: BZkPAKb3EJIsI3sK
+
+# CONEXÃO DIRETA (IDEAL PARA EVOLUTION API)
+# Ideal para aplicativos com conexões persistentes e de longa duração
+DIRECT_CONNECTION=postgresql://postgres:BZkPAKb3EJIsI3sK@db.rvppxdhrahcwiwrrwwaz.supabase.co:5432/postgres
+
+# POOLER COMPARTILHADO (ALTERNATIVA)
+# Recomendado somente como alternativa à Conexão Direta
+SHARED_POOLER=postgresql://postgres.rvppxdhrahcwiwrrwwaz:BZkPAKb3EJIsI3sK@aws-1-sa-east-1.pooler.supabase.com:5432/postgres
+
+# POOLER TRANSAÇÕES (PARA SERVERLESS)
+# Ideal para aplicações sem estado, como funções sem servidor
+TRANSACTION_POOLER=postgres://postgres:BZkPAKb3EJIsI3sK@db.rvppxdhrahcwiwrrwwaz.supabase.co:6543/postgres
+
+# CONFIGURAÇÃO PRISMA (COM PGBOUNCER)
+DATABASE_URL=postgresql://postgres.rvppxdhrahcwiwrrwwaz:BZkPAKb3EJIsI3sK@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true
+DIRECT_URL=postgresql://postgres.rvppxdhrahcwiwrrwwaz:BZkPAKb3EJIsI3sK@aws-1-sa-east-1.pooler.supabase.com:5432/postgres
+
+# SUPABASE FRONTEND
+NEXT_PUBLIC_SUPABASE_URL=https://rvppxdhrahcwiwrrwwaz.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2cHB4ZGhyYWhjd2l3cnJ3d2F6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY0MDUyMzAsImV4cCI6MjA3MTk4MTIzMH0.JhNGeLdbaRiL_CHCLiVcExc62Hd7MYhLeycJSQyr9nM
