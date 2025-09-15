@@ -17,12 +17,18 @@ export class PrismaRepository extends PrismaClient {
   private readonly logger = new Logger('PrismaRepository');
 
   public async onModuleInit() {
-    await this.$connect();
-    this.logger.info('Repository:Prisma - ON');
+    if (this.configService.get('DATABASE_ENABLED') === 'true') {
+      await this.$connect();
+      this.logger.info('Repository:Prisma - ON');
+    } else {
+      this.logger.info('Repository:Prisma - DISABLED');
+    }
   }
 
   public async onModuleDestroy() {
-    await this.$disconnect();
-    this.logger.warn('Repository:Prisma - OFF');
+    if (this.configService.get('DATABASE_ENABLED') === 'true') {
+      await this.$disconnect();
+      this.logger.warn('Repository:Prisma - OFF');
+    }
   }
 }
