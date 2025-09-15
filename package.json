@@ -5,7 +5,7 @@
   "main": "./dist/main.js",
   "type": "commonjs",
   "scripts": {
-    "build": "npx prisma generate --schema=prisma/postgresql-schema.prisma && npx tsc --skipLibCheck",
+    "build": "npx prisma generate --schema=prisma/postgresql-schema.prisma && tsup",
     "start": "node dist/main",
     "start:prod": "node dist/main",
     "dev:server": "tsx watch ./src/main.ts",
@@ -60,7 +60,7 @@
     "amqplib": "^0.10.5",
     "audio-decode": "^2.2.3",
     "axios": "^1.7.9",
-    "baileys": "^6.7.8",
+    "baileys": "github:WhiskeySockets/Baileys",
     "class-validator": "^0.14.1",
     "compression": "^1.7.5",
     "cors": "^2.8.5",
