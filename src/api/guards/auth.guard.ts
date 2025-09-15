@@ -26,20 +26,23 @@ async function apikey(req: Request, _: Response, next: NextFunction) {
   const param = req.params as unknown as InstanceDto;
 
   try {
-    if (param?.instanceName) {
-      const instance = await prismaRepository.instance.findUnique({
-        where: { name: param.instanceName },
-      });
-      if (instance.token === key) {
-        return next();
-      }
-    } else {
-      if (req.originalUrl.includes('/instance/fetchInstances') && db.SAVE_DATA.INSTANCE) {
-        const instanceByKey = await prismaRepository.instance.findFirst({
-          where: { token: key },
+    // Se banco desabilitado, só aceita API key global
+    if (configService.get('DATABASE_ENABLED') === 'true') {
+      if (param?.instanceName) {
+        const instance = await prismaRepository.instance.findUnique({
+          where: { name: param.instanceName },
         });
-        if (instanceByKey) {
+        if (instance.token === key) {
           return next();
+        }
+      } else {
+        if (req.originalUrl.includes('/instance/fetchInstances') && db.SAVE_DATA.INSTANCE) {
+          const instanceByKey = await prismaRepository.instance.findFirst({
+            where: { token: key },
+          });
+          if (instanceByKey) {
+            return next();
+          }
         }
       }
     }
