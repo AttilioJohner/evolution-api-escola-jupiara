@@ -137,7 +137,7 @@ export class WAMonitoringService {
 
   public async cleaningUp(instanceName: string) {
     let instanceDbId: string;
-    if (this.db.SAVE_DATA.INSTANCE) {
+    if (this.db.SAVE_DATA.INSTANCE && this.configService.get('DATABASE_ENABLED') === 'true') {
       const findInstance = await this.prismaRepository.instance.findFirst({
         where: { name: instanceName },
       });
@@ -219,6 +219,11 @@ export class WAMonitoringService {
 
   public async saveInstance(data: any) {
     try {
+      // Se banco desabilitado, não salva instância
+      if (this.configService.get('DATABASE_ENABLED') !== 'true') {
+        return;
+      }
+      
       const clientName = await this.configService.get<Database>('DATABASE').CONNECTION.CLIENT_NAME;
       await this.prismaRepository.instance.create({
         data: {

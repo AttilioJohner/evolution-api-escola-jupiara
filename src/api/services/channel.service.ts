@@ -156,6 +156,12 @@ export class ChannelStartupService {
   }
 
   public async setSettings(data: SettingsDto) {
+    // Se banco desabilitado, só salva localmente
+    if (this.configService.get('DATABASE_ENABLED') !== 'true') {
+      Object.assign(this.localSettings, data);
+      return;
+    }
+    
     await this.prismaRepository.setting.upsert({
       where: {
         instanceId: this.instanceId,
