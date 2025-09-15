@@ -1,15 +1,10 @@
 {
   "name": "evolution-api-escola-jupiara",
   "version": "1.0.0",
-  "description": "Evolution API para Escola Jupiara - Versão Simplificada",
-  "main": "simple-server.js",
+  "description": "Evolution API para Escola Jupiara",
+  "main": "server.js",
   "scripts": {
-    "build": "echo 'Build simples'",
-    "start": "node simple-server.js"
-  },
-  "dependencies": {
-    "express": "^4.21.2",
-    "cors": "^2.8.5"
+    "start": "node server.js"
   },
   "engines": {
     "node": "20.x"
