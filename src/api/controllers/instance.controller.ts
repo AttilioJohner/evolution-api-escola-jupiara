@@ -303,7 +303,7 @@ export class InstanceController {
     try {
       logStep("iniciando connectToWhatsapp", { instanceName });
       const instance = this.waMonitor.waInstances[instanceName];
-      const state = instance?.connectionStatus?.state;
+      const state = instance?.connectionStatus?.state || 'close';
 
       if (!state) {
         throw new BadRequestException('The "' + instanceName + '" instance does not exist');
