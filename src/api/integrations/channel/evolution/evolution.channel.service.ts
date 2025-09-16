@@ -528,7 +528,7 @@ export class EvolutionStartupService extends ChannelStartupService {
       return messageRaw;
     } catch (error) {
       this.logger.error(error);
-      throw new BadRequestException(error.toString());
+      throw new BadRequestException(error instanceof Error ? error.message : String(error));
     }
   }
 

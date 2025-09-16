@@ -1231,7 +1231,7 @@ export class ChatwootService {
       conversationId: conversation,
       data: {
         content: i18next.t('cw.message.notsent', {
-          error: error ? `_${error.toString()}_` : '',
+          error: error ? `_${error instanceof Error ? error.message : String(error)}_` : '',
         }),
         message_type: 'outgoing',
         private: true,
@@ -2545,7 +2545,7 @@ export class ChatwootService {
         }
       });
     } catch (error) {
-      this.logger.error(`Error on update avatar in recent conversations: ${error.toString()}`);
+      this.logger.error(`Error on update avatar in recent conversations: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 

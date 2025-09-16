@@ -165,7 +165,7 @@ class ChatwootImport {
 
       return totalContactsImported;
     } catch (error) {
-      this.logger.error(`Error on import history contacts: ${error.toString()}`);
+      this.logger.error(`Error on import history contacts: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -194,7 +194,7 @@ class ChatwootImport {
 
       return existingSourceIdsSet;
     } catch (error) {
-      this.logger.error(`Error on getExistingSourceIds: ${error.toString()}`);
+      this.logger.error(`Error on getExistingSourceIds: ${error instanceof Error ? error.message : String(error)}`);
       return new Set<string>();
     }
   }
@@ -333,7 +333,7 @@ class ChatwootImport {
 
       return totalMessagesImported;
     } catch (error) {
-      this.logger.error(`Error on import history messages: ${error.toString()}`);
+      this.logger.error(`Error on import history messages: ${error instanceof Error ? error.message : String(error)}`);
 
       this.deleteHistoryMessages(instance);
       this.deleteRepositoryMessagesCache(instance);
@@ -442,7 +442,7 @@ class ChatwootImport {
 
       return (await pgClient.query(sqlUser, [provider.token]))?.rows[0] || false;
     } catch (error) {
-      this.logger.error(`Error on getChatwootUser: ${error.toString()}`);
+      this.logger.error(`Error on getChatwootUser: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -483,7 +483,7 @@ class ChatwootImport {
 
       return (await pgClient.query(sql, [provider.accountId, inbox.id, limit]))?.rows;
     } catch (error) {
-      this.logger.error(`Error on get recent conversations: ${error.toString()}`);
+      this.logger.error(`Error on get recent conversations: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
