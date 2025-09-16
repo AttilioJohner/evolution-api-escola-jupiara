@@ -343,7 +343,7 @@ export class BaileysStartupService extends ChannelStartupService {
 
       qrcode.toDataURL(qr, optsQrcode, (error, base64) => {
         if (error) {
-          this.logger.error('Qrcode generate failed:' + error.toString());
+          this.logger.error('Qrcode generate failed:' + error instanceof Error ? error.message : String(error));
           return;
         }
 
@@ -697,7 +697,8 @@ export class BaileysStartupService extends ChannelStartupService {
       return await this.createClient(number);
     } catch (error) {
       this.logger.error(error);
-      throw new InternalServerErrorException(error?.toString());
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new InternalServerErrorException(errorMessage);
     }
   }
 
@@ -706,7 +707,7 @@ export class BaileysStartupService extends ChannelStartupService {
       return await this.createClient(this.phoneNumber);
     } catch (error) {
       this.logger.error(error);
-      throw new InternalServerErrorException(error?.toString());
+      throw new InternalServerErrorException(error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -2258,7 +2259,7 @@ export class BaileysStartupService extends ChannelStartupService {
       return messageRaw;
     } catch (error) {
       this.logger.error(error);
-      throw new BadRequestException(error.toString());
+      throw new BadRequestException(error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -2310,7 +2311,7 @@ export class BaileysStartupService extends ChannelStartupService {
       return { presence: data.presence };
     } catch (error) {
       this.logger.error(error);
-      throw new BadRequestException(error.toString());
+      throw new BadRequestException(error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -2322,7 +2323,7 @@ export class BaileysStartupService extends ChannelStartupService {
       return { presence: data.presence };
     } catch (error) {
       this.logger.error(error);
-      throw new BadRequestException(error.toString());
+      throw new BadRequestException(error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -2583,7 +2584,7 @@ export class BaileysStartupService extends ChannelStartupService {
       );
     } catch (error) {
       this.logger.error(error);
-      throw new InternalServerErrorException(error?.toString() || error);
+      throw new InternalServerErrorException(error instanceof Error ? error.message : String(error) || error);
     }
   }
 
@@ -3374,7 +3375,7 @@ export class BaileysStartupService extends ChannelStartupService {
       await this.client.readMessages(keys);
       return { message: 'Read messages', read: 'success' };
     } catch (error) {
-      throw new InternalServerErrorException('Read messages fail', error.toString());
+      throw new InternalServerErrorException('Read messages fail', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -3425,7 +3426,7 @@ export class BaileysStartupService extends ChannelStartupService {
     } catch (error) {
       throw new InternalServerErrorException({
         archived: false,
-        message: ['An error occurred while archiving the chat. Open a calling.', error.toString()],
+        message: ['An error occurred while archiving the chat. Open a calling.', error instanceof Error ? error.message : String(error)],
       });
     }
   }
@@ -3453,7 +3454,7 @@ export class BaileysStartupService extends ChannelStartupService {
     } catch (error) {
       throw new InternalServerErrorException({
         markedChatUnread: false,
-        message: ['An error occurred while marked unread the chat. Open a calling.', error.toString()],
+        message: ['An error occurred while marked unread the chat. Open a calling.', error instanceof Error ? error.message : String(error)],
       });
     }
   }
@@ -3508,7 +3509,7 @@ export class BaileysStartupService extends ChannelStartupService {
 
       return response;
     } catch (error) {
-      throw new InternalServerErrorException('Error while deleting message for everyone', error?.toString());
+      throw new InternalServerErrorException('Error while deleting message for everyone', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -3663,7 +3664,7 @@ export class BaileysStartupService extends ChannelStartupService {
     } catch (error) {
       this.logger.error('Error processing media message:');
       this.logger.error(error);
-      throw new BadRequestException(error.toString());
+      throw new BadRequestException(error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -3703,7 +3704,7 @@ export class BaileysStartupService extends ChannelStartupService {
         },
       };
     } catch (error) {
-      throw new InternalServerErrorException('Error updating privacy settings', error.toString());
+      throw new InternalServerErrorException('Error updating privacy settings', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -3721,7 +3722,7 @@ export class BaileysStartupService extends ChannelStartupService {
 
       return { isBusiness: true, ...profile };
     } catch (error) {
-      throw new InternalServerErrorException('Error updating profile name', error.toString());
+      throw new InternalServerErrorException('Error updating profile name', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -3731,7 +3732,7 @@ export class BaileysStartupService extends ChannelStartupService {
 
       return { update: 'success' };
     } catch (error) {
-      throw new InternalServerErrorException('Error updating profile name', error.toString());
+      throw new InternalServerErrorException('Error updating profile name', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -3741,7 +3742,7 @@ export class BaileysStartupService extends ChannelStartupService {
 
       return { update: 'success' };
     } catch (error) {
-      throw new InternalServerErrorException('Error updating profile status', error.toString());
+      throw new InternalServerErrorException('Error updating profile status', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -3782,7 +3783,7 @@ export class BaileysStartupService extends ChannelStartupService {
 
       return { update: 'success' };
     } catch (error) {
-      throw new InternalServerErrorException('Error updating profile picture', error.toString());
+      throw new InternalServerErrorException('Error updating profile picture', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -3794,7 +3795,7 @@ export class BaileysStartupService extends ChannelStartupService {
 
       return { update: 'success' };
     } catch (error) {
-      throw new InternalServerErrorException('Error removing profile picture', error.toString());
+      throw new InternalServerErrorException('Error removing profile picture', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -3814,7 +3815,7 @@ export class BaileysStartupService extends ChannelStartupService {
 
       return { block: 'success' };
     } catch (error) {
-      throw new InternalServerErrorException('Error blocking user', error.toString());
+      throw new InternalServerErrorException('Error blocking user', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -3841,7 +3842,7 @@ export class BaileysStartupService extends ChannelStartupService {
       return null;
     } catch (error) {
       this.logger.error(error);
-      throw new BadRequestException(error.toString());
+      throw new BadRequestException(error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -3968,7 +3969,7 @@ export class BaileysStartupService extends ChannelStartupService {
         return { numberJid: contact.jid, labelId: data.labelId, remove: true };
       }
     } catch (error) {
-      throw new BadRequestException(`Unable to ${data.action} label to chat`, error.toString());
+      throw new BadRequestException(`Unable to ${data.action} label to chat`, error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -4035,7 +4036,7 @@ export class BaileysStartupService extends ChannelStartupService {
       return group;
     } catch (error) {
       this.logger.error(error);
-      throw new InternalServerErrorException('Error creating group', error.toString());
+      throw new InternalServerErrorException('Error creating group', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -4073,7 +4074,7 @@ export class BaileysStartupService extends ChannelStartupService {
 
       return { update: 'success' };
     } catch (error) {
-      throw new InternalServerErrorException('Error update group picture', error.toString());
+      throw new InternalServerErrorException('Error update group picture', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -4083,7 +4084,7 @@ export class BaileysStartupService extends ChannelStartupService {
 
       return { update: 'success' };
     } catch (error) {
-      throw new InternalServerErrorException('Error updating group subject', error.toString());
+      throw new InternalServerErrorException('Error updating group subject', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -4093,7 +4094,7 @@ export class BaileysStartupService extends ChannelStartupService {
 
       return { update: 'success' };
     } catch (error) {
-      throw new InternalServerErrorException('Error updating group description', error.toString());
+      throw new InternalServerErrorException('Error updating group description', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -4130,7 +4131,7 @@ export class BaileysStartupService extends ChannelStartupService {
       if (reply === 'inner') {
         return;
       }
-      throw new NotFoundException('Error fetching group', error.toString());
+      throw new NotFoundException('Error fetching group', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -4174,7 +4175,7 @@ export class BaileysStartupService extends ChannelStartupService {
       const code = await this.client.groupInviteCode(id.groupJid);
       return { inviteUrl: `https://chat.whatsapp.com/${code}`, inviteCode: code };
     } catch (error) {
-      throw new NotFoundException('No invite code', error.toString());
+      throw new NotFoundException('No invite code', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -4214,7 +4215,7 @@ export class BaileysStartupService extends ChannelStartupService {
       const groupJid = await this.client.groupAcceptInvite(id.inviteCode);
       return { accepted: true, groupJid: groupJid };
     } catch (error) {
-      throw new NotFoundException('Accept invite error', error.toString());
+      throw new NotFoundException('Accept invite error', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -4223,7 +4224,7 @@ export class BaileysStartupService extends ChannelStartupService {
       const inviteCode = await this.client.groupRevokeInvite(id.groupJid);
       return { revoked: true, inviteCode };
     } catch (error) {
-      throw new NotFoundException('Revoke error', error.toString());
+      throw new NotFoundException('Revoke error', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -4250,7 +4251,7 @@ export class BaileysStartupService extends ChannelStartupService {
       return { participants: parsedParticipants };
     } catch (error) {
       console.error(error);
-      throw new NotFoundException('No participants', error.toString());
+      throw new NotFoundException('No participants', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -4264,7 +4265,7 @@ export class BaileysStartupService extends ChannelStartupService {
       );
       return { updateParticipants: updateParticipants };
     } catch (error) {
-      throw new BadRequestException('Error updating participants', error.toString());
+      throw new BadRequestException('Error updating participants', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -4273,7 +4274,7 @@ export class BaileysStartupService extends ChannelStartupService {
       const updateSetting = await this.client.groupSettingUpdate(update.groupJid, update.action);
       return { updateSetting: updateSetting };
     } catch (error) {
-      throw new BadRequestException('Error updating setting', error.toString());
+      throw new BadRequestException('Error updating setting', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -4282,7 +4283,7 @@ export class BaileysStartupService extends ChannelStartupService {
       await this.client.groupToggleEphemeral(update.groupJid, update.expiration);
       return { success: true };
     } catch (error) {
-      throw new BadRequestException('Error updating setting', error.toString());
+      throw new BadRequestException('Error updating setting', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -4291,7 +4292,7 @@ export class BaileysStartupService extends ChannelStartupService {
       await this.client.groupLeave(id.groupJid);
       return { groupJid: id.groupJid, leave: true };
     } catch (error) {
-      throw new BadRequestException('Unable to leave the group', error.toString());
+      throw new BadRequestException('Unable to leave the group', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -4600,7 +4601,7 @@ export class BaileysStartupService extends ChannelStartupService {
 
       return catalog;
     } catch (error) {
-      throw new InternalServerErrorException('Error getCatalog', error.toString());
+      throw new InternalServerErrorException('Error getCatalog', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -4644,7 +4645,7 @@ export class BaileysStartupService extends ChannelStartupService {
 
       return result.collections;
     } catch (error) {
-      throw new InternalServerErrorException('Error getCatalog', error.toString());
+      throw new InternalServerErrorException('Error getCatalog', error instanceof Error ? error.message : String(error));
     }
   }
 
