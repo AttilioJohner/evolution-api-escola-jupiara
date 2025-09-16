@@ -369,7 +369,7 @@ export class ConfigService {
       },
       DATABASE: {
         CONNECTION: {
-          URI: process.env.DATABASE_CONNECTION_URI || '',
+          URI: process.env.DATABASE_URL || process.env.DATABASE_CONNECTION_URI || '',
           CLIENT_NAME: process.env.DATABASE_CONNECTION_CLIENT_NAME || 'evolution',
         },
         PROVIDER: process.env.DATABASE_PROVIDER || 'postgresql',
