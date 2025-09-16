@@ -325,7 +325,8 @@ export class InstanceController {
       };
     } catch (error) {
       this.logger.error(error);
-      return { error: true, message: error.toString() };
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      return { error: true, message: errorMessage };
     }
   }
 
@@ -354,7 +355,8 @@ export class InstanceController {
       }
     } catch (error) {
       this.logger.error(error);
-      return { error: true, message: error.toString() };
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      return { error: true, message: errorMessage };
     }
   }
 
@@ -418,7 +420,8 @@ export class InstanceController {
 
       return { status: 'SUCCESS', error: false, response: { message: 'Instance logged out' } };
     } catch (error) {
-      throw new InternalServerErrorException(error.toString());
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new InternalServerErrorException(errorMessage);
     }
   }
 
@@ -444,7 +447,8 @@ export class InstanceController {
       this.eventEmitter.emit('remove.instance', instanceName, 'inner');
       return { status: 'SUCCESS', error: false, response: { message: 'Instance deleted' } };
     } catch (error) {
-      throw new BadRequestException(error.toString());
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new BadRequestException(errorMessage);
     }
   }
 }
