@@ -293,7 +293,15 @@ export class InstanceController {
   }
 
   public async connectToWhatsapp({ instanceName, number = null }: InstanceDto) {
+    const TAG = "connect-flow:instance.controller";
+
+    function logStep(step: string, data?: unknown) {
+      const { toMessage } = require('../../lib/toMessage');
+      console.error(TAG, step, data ? { message: toMessage(data) } : undefined);
+    }
+
     try {
+      logStep("iniciando connectToWhatsapp", { instanceName });
       const instance = this.waMonitor.waInstances[instanceName];
       const state = instance?.connectionStatus?.state;
 
@@ -310,9 +318,11 @@ export class InstanceController {
       }
 
       if (state == 'close') {
+        logStep("antes do connectToWhatsapp Baileys");
         await instance.connectToWhatsapp(number);
 
         await delay(2000);
+        logStep("retornando qrCode", instance.qrCode);
         return instance.qrCode;
       }
 
@@ -324,9 +334,10 @@ export class InstanceController {
         qrcode: instance?.qrCode,
       };
     } catch (error) {
+      logStep("erro no connectToWhatsapp", error);
       this.logger.error(error);
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      return { error: true, message: errorMessage };
+      const { toMessage } = require('../../lib/toMessage');
+      return { error: true, message: toMessage(error) };
     }
   }
 

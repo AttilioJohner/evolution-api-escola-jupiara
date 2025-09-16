@@ -35,14 +35,32 @@ export class InstanceRouter extends RouterBroker {
         return res.status(HttpStatus.OK).json(response);
       })
       .get(this.routerPath('connect'), ...guards, async (req, res) => {
-        const response = await this.dataValidate<InstanceDto>({
-          request: req,
-          schema: null,
-          ClassRef: InstanceDto,
-          execute: (instance) => instanceController.connectToWhatsapp(instance),
-        });
+        try {
+          const response = await this.dataValidate<InstanceDto>({
+            request: req,
+            schema: null,
+            ClassRef: InstanceDto,
+            execute: (instance) => instanceController.connectToWhatsapp(instance),
+          });
 
-        return res.status(HttpStatus.OK).json(response);
+          // Guarda contra [object Object] - normalize resposta de erro
+          if (response?.error) {
+            const { toMessage } = await import('../../lib/toMessage');
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+              error: true,
+              message: toMessage(response.message ?? response),
+              details: response?.details ?? undefined,
+            });
+          }
+
+          return res.status(HttpStatus.OK).json(response);
+        } catch (err) {
+          const { toMessage } = await import('../../lib/toMessage');
+          return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+            error: true,
+            message: toMessage(err),
+          });
+        }
       })
       .get(this.routerPath('connectionState'), ...guards, async (req, res) => {
         const response = await this.dataValidate<InstanceDto>({

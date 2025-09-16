@@ -688,17 +688,29 @@ export class BaileysStartupService extends ChannelStartupService {
   }
 
   public async connectToWhatsapp(number?: string): Promise<WASocket> {
+    const TAG = "connect-flow:whatsapp.baileys";
+
+    function logStep(step: string, data?: unknown) {
+      const { toMessage } = require('../../../../lib/toMessage');
+      console.error(TAG, step, data ? { message: toMessage(data) } : undefined);
+    }
+
     try {
+      logStep("iniciando connectToWhatsapp Baileys");
       this.loadChatwoot();
       this.loadSettings();
       this.loadWebhook();
       this.loadProxy();
 
-      return await this.createClient(number);
+      logStep("antes do createClient");
+      const client = await this.createClient(number);
+      logStep("createClient concluído");
+      return client;
     } catch (error) {
+      logStep("erro no connectToWhatsapp Baileys", error);
       this.logger.error(error);
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      throw new InternalServerErrorException(errorMessage);
+      const { toMessage } = require('../../../../lib/toMessage');
+      throw new InternalServerErrorException(toMessage(error));
     }
   }
 
