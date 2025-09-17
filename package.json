@@ -5,7 +5,7 @@
   "main": "./dist/main.js",
   "type": "commonjs",
   "scripts": {
-    "build": "npx tsc --skipLibCheck && echo 'Build completed successfully'",
+    "build": "npx tsc --skipLibCheck --noEmitOnError false && echo 'Build completed successfully'",
     "start": "npx prisma generate --schema=prisma/postgresql-schema.prisma && npx prisma db push --schema=prisma/postgresql-schema.prisma && node ./dist/main.js",
     "start:prod": "node dist/main",
     "dev:server": "tsx watch ./src/main.ts",
