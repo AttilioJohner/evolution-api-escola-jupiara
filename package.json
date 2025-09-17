@@ -5,7 +5,7 @@
   "main": "./dist/main.js",
   "type": "commonjs",
   "scripts": {
-    "build": "echo 'DATABASE_CONNECTION_URI:' $DATABASE_CONNECTION_URI && npx prisma generate --schema=prisma/postgresql-schema.prisma && npx tsc || echo 'Build OK'",
+    "build": "echo 'DATABASE_CONNECTION_URI:' $DATABASE_CONNECTION_URI && (npx prisma generate --schema=prisma/postgresql-schema.prisma || echo 'Prisma skip') && npx tsc",
     "start": "node ./dist/main.js",
     "start:prod": "node dist/main",
     "dev:server": "tsx watch ./src/main.ts",
