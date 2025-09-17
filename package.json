@@ -5,8 +5,8 @@
   "main": "./dist/main.js",
   "type": "commonjs",
   "scripts": {
-    "build": "./node_modules/.bin/prisma generate --schema=prisma/postgresql-schema.prisma && ./node_modules/.bin/prisma db push --schema=prisma/postgresql-schema.prisma && npx tsc --skipLibCheck && echo 'Build completed successfully'",
-    "start": "node ./dist/main.js",
+    "build": "npx tsc --skipLibCheck && echo 'Build completed successfully'",
+    "start": "npx prisma generate --schema=prisma/postgresql-schema.prisma && npx prisma db push --schema=prisma/postgresql-schema.prisma && node ./dist/main.js",
     "start:prod": "node dist/main",
     "dev:server": "tsx watch ./src/main.ts",
     "test": "tsx watch ./test/all.test.ts",
