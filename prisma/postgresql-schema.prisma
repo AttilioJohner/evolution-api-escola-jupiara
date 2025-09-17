@@ -20,6 +20,8 @@ enum InstanceConnectionStatus {
   open
   close
   connecting
+
+  @@schema("evolution")
 }
 
 enum DeviceMessage {
@@ -28,12 +30,16 @@ enum DeviceMessage {
   web
   unknown
   desktop
+
+  @@schema("evolution")
 }
 
 enum SessionStatus {
   opened
   closed
   paused
+
+  @@schema("evolution")
 }
 
 enum TriggerType {
@@ -41,6 +47,8 @@ enum TriggerType {
   keyword
   none
   advanced
+
+  @@schema("evolution")
 }
 
 enum TriggerOperator {
@@ -49,11 +57,15 @@ enum TriggerOperator {
   startsWith
   endsWith
   regex
+
+  @@schema("evolution")
 }
 
 enum OpenaiBotType {
   assistant
   chatCompletion
+
+  @@schema("evolution")
 }
 
 enum DifyBotType {
@@ -61,6 +73,8 @@ enum DifyBotType {
   textGenerator
   agent
   workflow
+
+  @@schema("evolution")
 }
 
 model Instance {
@@ -113,6 +127,8 @@ model Instance {
   N8nSetting              N8nSetting[]
   Evoai                   Evoai[]
   EvoaiSetting            EvoaiSetting?
+
+  @@schema("evolution")
 }
 
 model Session {
@@ -121,6 +137,8 @@ model Session {
   creds     String?  @db.Text
   createdAt DateTime @default(now()) @db.Timestamp
   Instance  Instance @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@schema("evolution")
 }
 
 model Chat {
@@ -136,6 +154,8 @@ model Chat {
 
   @@index([instanceId])
   @@index([remoteJid])
+
+  @@schema("evolution")
 }
 
 model Contact {
@@ -151,6 +171,8 @@ model Contact {
   @@unique([remoteJid, instanceId])
   @@index([remoteJid])
   @@index([instanceId])
+
+  @@schema("evolution")
 }
 
 model Message {
@@ -179,6 +201,8 @@ model Message {
   session   IntegrationSession? @relation(fields: [sessionId], references: [id])
 
   @@index([instanceId])
+
+  @@schema("evolution")
 }
 
 model MessageUpdate {
@@ -196,6 +220,8 @@ model MessageUpdate {
 
   @@index([instanceId])
   @@index([messageId])
+
+  @@schema("evolution")
 }
 
 model Webhook {
@@ -212,6 +238,8 @@ model Webhook {
   instanceId      String    @unique
 
   @@index([instanceId])
+
+  @@schema("evolution")
 }
 
 model Chatwoot {
@@ -237,6 +265,8 @@ model Chatwoot {
   updatedAt               DateTime  @updatedAt @db.Timestamp
   Instance                Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId              String    @unique
+
+  @@schema("evolution")
 }
 
 model Label {
@@ -251,6 +281,8 @@ model Label {
   instanceId   String
 
   @@unique([labelId, instanceId])
+
+  @@schema("evolution")
 }
 
 model Proxy {
@@ -265,6 +297,8 @@ model Proxy {
   updatedAt  DateTime  @updatedAt @db.Timestamp
   Instance   Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId String    @unique
+
+  @@schema("evolution")
 }
 
 model Setting {
@@ -283,6 +317,8 @@ model Setting {
   instanceId      String    @unique
 
   @@index([instanceId])
+
+  @@schema("evolution")
 }
 
 model Rabbitmq {
@@ -293,6 +329,8 @@ model Rabbitmq {
   updatedAt  DateTime  @updatedAt @db.Timestamp
   Instance   Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId String    @unique
+
+  @@schema("evolution")
 }
 
 model Nats {
@@ -303,6 +341,8 @@ model Nats {
   updatedAt  DateTime  @updatedAt @db.Timestamp
   Instance   Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId String    @unique
+
+  @@schema("evolution")
 }
 
 model Sqs {
@@ -313,6 +353,8 @@ model Sqs {
   updatedAt  DateTime  @updatedAt @db.Timestamp
   Instance   Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId String    @unique
+
+  @@schema("evolution")
 }
 
 model Websocket {
@@ -323,6 +365,8 @@ model Websocket {
   updatedAt  DateTime  @updatedAt @db.Timestamp
   Instance   Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId String    @unique
+
+  @@schema("evolution")
 }
 
 model Pusher {
@@ -338,6 +382,8 @@ model Pusher {
   updatedAt  DateTime  @updatedAt @db.Timestamp
   Instance   Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId String    @unique
+
+  @@schema("evolution")
 }
 
 model Typebot {
@@ -365,6 +411,8 @@ model Typebot {
   Instance        Instance         @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId      String
   TypebotSetting  TypebotSetting[]
+
+  @@schema("evolution")
 }
 
 model TypebotSetting {
@@ -386,6 +434,8 @@ model TypebotSetting {
   Fallback          Typebot?  @relation(fields: [typebotIdFallback], references: [id])
   Instance          Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId        String    @unique
+
+  @@schema("evolution")
 }
 
 model Media {
@@ -398,6 +448,8 @@ model Media {
   messageId  String    @unique
   Instance   Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId String
+
+  @@schema("evolution")
 }
 
 model OpenaiCreds {
@@ -410,6 +462,8 @@ model OpenaiCreds {
   instanceId      String
   OpenaiAssistant OpenaiBot[]
   OpenaiSetting   OpenaiSetting?
+
+  @@schema("evolution")
 }
 
 model OpenaiBot {
@@ -445,6 +499,8 @@ model OpenaiBot {
   Instance          Instance         @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId        String
   OpenaiSetting     OpenaiSetting[]
+
+  @@schema("evolution")
 }
 
 model IntegrationSession {
@@ -464,6 +520,8 @@ model IntegrationSession {
   parameters Json?         @db.JsonB
 
   botId String?
+
+  @@schema("evolution")
 }
 
 model OpenaiSetting {
@@ -488,6 +546,8 @@ model OpenaiSetting {
   openaiIdFallback String?      @db.VarChar(100)
   Instance         Instance     @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId       String       @unique
+
+  @@schema("evolution")
 }
 
 model Template {
@@ -500,6 +560,8 @@ model Template {
   updatedAt  DateTime  @updatedAt @db.Timestamp
   Instance   Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId String
+
+  @@schema("evolution")
 }
 
 model Dify {
@@ -528,6 +590,8 @@ model Dify {
   Instance        Instance         @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId      String
   DifySetting     DifySetting[]
+
+  @@schema("evolution")
 }
 
 model DifySetting {
@@ -549,6 +613,8 @@ model DifySetting {
   difyIdFallback  String?   @db.VarChar(100)
   Instance        Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId      String    @unique
+
+  @@schema("evolution")
 }
 
 model EvolutionBot {
@@ -576,6 +642,8 @@ model EvolutionBot {
   Instance            Instance              @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId          String
   EvolutionBotSetting EvolutionBotSetting[]
+
+  @@schema("evolution")
 }
 
 model EvolutionBotSetting {
@@ -597,6 +665,8 @@ model EvolutionBotSetting {
   botIdFallback   String?       @db.VarChar(100)
   Instance        Instance      @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId      String        @unique
+
+  @@schema("evolution")
 }
 
 model Flowise {
@@ -624,6 +694,8 @@ model Flowise {
   Instance        Instance         @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId      String
   FlowiseSetting  FlowiseSetting[]
+
+  @@schema("evolution")
 }
 
 model FlowiseSetting {
@@ -645,6 +717,8 @@ model FlowiseSetting {
   flowiseIdFallback String?   @db.VarChar(100)
   Instance          Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId        String    @unique
+
+  @@schema("evolution")
 }
 
 model IsOnWhatsapp {
@@ -654,6 +728,8 @@ model IsOnWhatsapp {
   lid        String?  @db.VarChar(100)
   createdAt  DateTime @default(now()) @db.Timestamp
   updatedAt  DateTime @updatedAt @db.Timestamp
+
+  @@schema("evolution")
 }
 
 model N8n {
@@ -682,6 +758,8 @@ model N8n {
   Instance        Instance         @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId      String
   N8nSetting      N8nSetting[]
+
+  @@schema("evolution")
 }
 
 model N8nSetting {
@@ -703,6 +781,8 @@ model N8nSetting {
   n8nIdFallback   String?   @db.VarChar(100)
   Instance        Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId      String    @unique
+
+  @@schema("evolution")
 }
 
 model Evoai {
@@ -730,6 +810,8 @@ model Evoai {
   Instance        Instance         @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId      String
   EvoaiSetting    EvoaiSetting[]
+
+  @@schema("evolution")
 }
 
 model EvoaiSetting {
@@ -751,4 +833,6 @@ model EvoaiSetting {
   evoaiIdFallback String?   @db.VarChar(100)
   Instance        Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId      String    @unique
+
+  @@schema("evolution")
 }
