@@ -13,7 +13,7 @@ datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
-  schemas   = ["evolution"]
+  schemas   = ["public"]
 }
 
 enum InstanceConnectionStatus {
@@ -21,7 +21,7 @@ enum InstanceConnectionStatus {
   close
   connecting
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 enum DeviceMessage {
@@ -31,7 +31,7 @@ enum DeviceMessage {
   unknown
   desktop
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 enum SessionStatus {
@@ -39,7 +39,7 @@ enum SessionStatus {
   closed
   paused
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 enum TriggerType {
@@ -48,7 +48,7 @@ enum TriggerType {
   none
   advanced
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 enum TriggerOperator {
@@ -58,14 +58,14 @@ enum TriggerOperator {
   endsWith
   regex
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 enum OpenaiBotType {
   assistant
   chatCompletion
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 enum DifyBotType {
@@ -74,7 +74,7 @@ enum DifyBotType {
   agent
   workflow
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Instance {
@@ -128,7 +128,7 @@ model Instance {
   Evoai                   Evoai[]
   EvoaiSetting            EvoaiSetting?
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Session {
@@ -138,7 +138,7 @@ model Session {
   createdAt DateTime @default(now()) @db.Timestamp
   Instance  Instance @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Chat {
@@ -155,7 +155,7 @@ model Chat {
   @@index([instanceId])
   @@index([remoteJid])
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Contact {
@@ -172,7 +172,7 @@ model Contact {
   @@index([remoteJid])
   @@index([instanceId])
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Message {
@@ -202,7 +202,7 @@ model Message {
 
   @@index([instanceId])
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model MessageUpdate {
@@ -221,7 +221,7 @@ model MessageUpdate {
   @@index([instanceId])
   @@index([messageId])
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Webhook {
@@ -239,7 +239,7 @@ model Webhook {
 
   @@index([instanceId])
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Chatwoot {
@@ -266,7 +266,7 @@ model Chatwoot {
   Instance                Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId              String    @unique
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Label {
@@ -282,7 +282,7 @@ model Label {
 
   @@unique([labelId, instanceId])
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Proxy {
@@ -298,7 +298,7 @@ model Proxy {
   Instance   Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId String    @unique
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Setting {
@@ -318,7 +318,7 @@ model Setting {
 
   @@index([instanceId])
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Rabbitmq {
@@ -330,7 +330,7 @@ model Rabbitmq {
   Instance   Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId String    @unique
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Nats {
@@ -342,7 +342,7 @@ model Nats {
   Instance   Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId String    @unique
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Sqs {
@@ -354,7 +354,7 @@ model Sqs {
   Instance   Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId String    @unique
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Websocket {
@@ -366,7 +366,7 @@ model Websocket {
   Instance   Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId String    @unique
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Pusher {
@@ -383,7 +383,7 @@ model Pusher {
   Instance   Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId String    @unique
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Typebot {
@@ -412,7 +412,7 @@ model Typebot {
   instanceId      String
   TypebotSetting  TypebotSetting[]
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model TypebotSetting {
@@ -435,7 +435,7 @@ model TypebotSetting {
   Instance          Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId        String    @unique
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Media {
@@ -449,7 +449,7 @@ model Media {
   Instance   Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId String
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model OpenaiCreds {
@@ -463,7 +463,7 @@ model OpenaiCreds {
   OpenaiAssistant OpenaiBot[]
   OpenaiSetting   OpenaiSetting?
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model OpenaiBot {
@@ -500,7 +500,7 @@ model OpenaiBot {
   instanceId        String
   OpenaiSetting     OpenaiSetting[]
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model IntegrationSession {
@@ -521,7 +521,7 @@ model IntegrationSession {
 
   botId String?
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model OpenaiSetting {
@@ -547,7 +547,7 @@ model OpenaiSetting {
   Instance         Instance     @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId       String       @unique
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Template {
@@ -561,7 +561,7 @@ model Template {
   Instance   Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId String
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Dify {
@@ -591,7 +591,7 @@ model Dify {
   instanceId      String
   DifySetting     DifySetting[]
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model DifySetting {
@@ -614,7 +614,7 @@ model DifySetting {
   Instance        Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId      String    @unique
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model EvolutionBot {
@@ -643,7 +643,7 @@ model EvolutionBot {
   instanceId          String
   EvolutionBotSetting EvolutionBotSetting[]
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model EvolutionBotSetting {
@@ -666,7 +666,7 @@ model EvolutionBotSetting {
   Instance        Instance      @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId      String        @unique
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Flowise {
@@ -695,7 +695,7 @@ model Flowise {
   instanceId      String
   FlowiseSetting  FlowiseSetting[]
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model FlowiseSetting {
@@ -718,7 +718,7 @@ model FlowiseSetting {
   Instance          Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId        String    @unique
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model IsOnWhatsapp {
@@ -729,7 +729,7 @@ model IsOnWhatsapp {
   createdAt  DateTime @default(now()) @db.Timestamp
   updatedAt  DateTime @updatedAt @db.Timestamp
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model N8n {
@@ -759,7 +759,7 @@ model N8n {
   instanceId      String
   N8nSetting      N8nSetting[]
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model N8nSetting {
@@ -782,7 +782,7 @@ model N8nSetting {
   Instance        Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId      String    @unique
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model Evoai {
@@ -811,7 +811,7 @@ model Evoai {
   instanceId      String
   EvoaiSetting    EvoaiSetting[]
 
-  @@schema("evolution")
+  @@schema("public")
 }
 
 model EvoaiSetting {
@@ -834,5 +834,5 @@ model EvoaiSetting {
   Instance        Instance  @relation(fields: [instanceId], references: [id], onDelete: Cascade)
   instanceId      String    @unique
 
-  @@schema("evolution")
+  @@schema("public")
 }
