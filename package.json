@@ -5,8 +5,8 @@
   "main": "./dist/main.js",
   "type": "commonjs",
   "scripts": {
-    "build": "echo 'DATABASE_CONNECTION_URI:' $DATABASE_CONNECTION_URI && npx prisma generate --schema=prisma/postgresql-schema.prisma || echo 'Build OK'",
-    "start": "tsx --tsconfig tsconfig.json ./src/main.ts",
+    "build": "echo 'DATABASE_CONNECTION_URI:' $DATABASE_CONNECTION_URI && npx prisma generate --schema=prisma/postgresql-schema.prisma && npx tsc || echo 'Build OK'",
+    "start": "node ./dist/main.js",
     "start:prod": "node dist/main",
     "dev:server": "tsx watch ./src/main.ts",
     "test": "tsx watch ./test/all.test.ts",
