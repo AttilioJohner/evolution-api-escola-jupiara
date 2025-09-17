@@ -17,15 +17,15 @@
     "strictNullChecks": false,
     "incremental": true,
     "noImplicitAny": false,
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
-      "@api/*": ["./src/api/*"],
-      "@cache/*": ["./src/cache/*"],
-      "@config/*": ["./src/config/*"],
-      "@exceptions": ["./src/exceptions"],
-      "@libs/*": ["./src/libs/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@validate/*": ["./src/validate/*"]
+      "@api/*": ["./api/*"],
+      "@cache/*": ["./cache/*"],
+      "@config/*": ["./config/*"],
+      "@exceptions": ["./exceptions"],
+      "@libs/*": ["./libs/*"],
+      "@utils/*": ["./utils/*"],
+      "@validate/*": ["./validate/*"]
     },
     "moduleResolution": "Node"
   },
