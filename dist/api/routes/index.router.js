@@ -1,4 +1,37 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -56,6 +89,7 @@ router.get('/health', (req, res) => {
     });
 });
 router.get('/health/db', async (req, res) => {
+    const start = Date.now();
     try {
         if (process.env.DATABASE_ENABLED === 'false') {
             return res.status(HttpStatus.OK).json({
@@ -63,20 +97,48 @@ router.get('/health/db', async (req, res) => {
                 message: 'Database is disabled via DATABASE_ENABLED=false'
             });
         }
-        const testQuery = 'SELECT 1 as test';
-        res.status(HttpStatus.OK).json({
-            status: 'ok',
-            message: 'Database connection successful',
-            timestamp: new Date().toISOString(),
-            database_url: process.env.DATABASE_URL ? 'configured' : 'not_configured'
+        if (!process.env.DATABASE_URL) {
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+                ok: false,
+                status: 'configuration_error',
+                message: 'DATABASE_URL not configured',
+                timestamp: new Date().toISOString()
+            });
+        }
+        const { PrismaClient } = await Promise.resolve().then(() => __importStar(require('@prisma/client')));
+        const prisma = new PrismaClient({
+            log: ['error']
         });
+        try {
+            const result = await prisma.$queryRaw `SELECT 1 as test`;
+            await prisma.$disconnect();
+            const duration = Date.now() - start;
+            res.status(HttpStatus.OK).json({
+                ok: true,
+                status: 'connected',
+                message: 'Database connection successful',
+                timestamp: new Date().toISOString(),
+                duration_ms: duration,
+                connection_type: process.env.DATABASE_URL?.includes('pgbouncer=true') ? 'pooler' : 'direct',
+                database_configured: true
+            });
+        }
+        catch (dbError) {
+            await prisma.$disconnect();
+            throw dbError;
+        }
     }
     catch (error) {
+        const duration = Date.now() - start;
+        const errorCode = error.code || error.errorCode || 'UNKNOWN';
         res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-            status: 'error',
+            ok: false,
+            status: 'connection_failed',
             message: 'Database connection failed',
-            error: error instanceof Error ? error.message : String(error),
-            timestamp: new Date().toISOString()
+            error_code: errorCode,
+            error_message: error.message || String(error),
+            timestamp: new Date().toISOString(),
+            duration_ms: duration
         });
     }
 });

@@ -57,6 +57,8 @@ router.get('/health', (req, res) => {
 
 // Database health check endpoint
 router.get('/health/db', async (req, res) => {
+  const start = Date.now();
+
   try {
     if (process.env.DATABASE_ENABLED === 'false') {
       return res.status(HttpStatus.OK).json({
@@ -65,21 +67,56 @@ router.get('/health/db', async (req, res) => {
       });
     }
 
-    // Simular uma query de teste
-    const testQuery = 'SELECT 1 as test';
+    if (!process.env.DATABASE_URL) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        ok: false,
+        status: 'configuration_error',
+        message: 'DATABASE_URL not configured',
+        timestamp: new Date().toISOString()
+      });
+    }
 
-    res.status(HttpStatus.OK).json({
-      status: 'ok',
-      message: 'Database connection successful',
-      timestamp: new Date().toISOString(),
-      database_url: process.env.DATABASE_URL ? 'configured' : 'not_configured'
+    // Import PrismaClient dynamically to avoid circular deps
+    const { PrismaClient } = await import('@prisma/client');
+
+    const prisma = new PrismaClient({
+      log: ['error']
     });
-  } catch (error) {
+
+    try {
+      // Test actual database connection
+      const result = await prisma.$queryRaw`SELECT 1 as test`;
+      await prisma.$disconnect();
+
+      const duration = Date.now() - start;
+
+      res.status(HttpStatus.OK).json({
+        ok: true,
+        status: 'connected',
+        message: 'Database connection successful',
+        timestamp: new Date().toISOString(),
+        duration_ms: duration,
+        connection_type: process.env.DATABASE_URL?.includes('pgbouncer=true') ? 'pooler' : 'direct',
+        database_configured: true
+      });
+
+    } catch (dbError: any) {
+      await prisma.$disconnect();
+      throw dbError;
+    }
+
+  } catch (error: any) {
+    const duration = Date.now() - start;
+    const errorCode = error.code || error.errorCode || 'UNKNOWN';
+
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-      status: 'error',
+      ok: false,
+      status: 'connection_failed',
       message: 'Database connection failed',
-      error: error instanceof Error ? error.message : String(error),
-      timestamp: new Date().toISOString()
+      error_code: errorCode,
+      error_message: error.message || String(error),
+      timestamp: new Date().toISOString(),
+      duration_ms: duration
     });
   }
 });
