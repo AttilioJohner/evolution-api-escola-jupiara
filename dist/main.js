@@ -36,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-require("@utils/instrumentSentry");
+require("./utils/instrumentSentry");
 const sessions_1 = require("@api/provider/sessions");
 const repository_service_1 = require("@api/repository/repository.service");
 const index_router_1 = require("@api/routes/index.router");

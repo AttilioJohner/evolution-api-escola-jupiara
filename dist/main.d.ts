@@ -1,1 +1,1 @@
-import '@utils/instrumentSentry';
+import './utils/instrumentSentry';
