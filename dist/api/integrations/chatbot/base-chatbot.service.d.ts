@@ -17,16 +17,16 @@ export declare abstract class BaseChatbotService<BotType = any, SettingsType = a
     createNewSession(instance: InstanceDto | any, data: any, type: string): Promise<{
         session: {
             id: string;
-            context: import("@prisma/client/runtime/library").JsonValue | null;
-            pushName: string | null;
+            type: string | null;
+            createdAt: Date | null;
             instanceId: string;
+            pushName: string | null;
             status: import(".prisma/client").$Enums.SessionStatus;
             sessionId: string;
-            remoteJid: string;
-            createdAt: Date | null;
             updatedAt: Date;
-            type: string | null;
+            remoteJid: string;
             awaitUser: boolean;
+            context: import("@prisma/client/runtime/library").JsonValue | null;
             parameters: import("@prisma/client/runtime/library").JsonValue | null;
             botId: string | null;
         };

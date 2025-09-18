@@ -14,10 +14,10 @@ export declare class TemplateService {
     find(instance: InstanceDto): Promise<any>;
     create(instance: InstanceDto, data: TemplateDto): Promise<{
         id: string;
-        name: string;
-        instanceId: string;
-        webhookUrl: string | null;
         createdAt: Date | null;
+        instanceId: string;
+        name: string;
+        webhookUrl: string | null;
         updatedAt: Date;
         template: import("@prisma/client/runtime/library").JsonValue;
         templateId: string;

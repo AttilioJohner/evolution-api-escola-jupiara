@@ -64,10 +64,10 @@ export declare class ChannelStartupService {
     setProxy(data: ProxyDto): Promise<void>;
     findProxy(): Promise<{
         id: string;
-        instanceId: string;
         createdAt: Date | null;
-        updatedAt: Date;
+        instanceId: string;
         enabled: boolean;
+        updatedAt: Date;
         host: string;
         port: string;
         protocol: string;
@@ -82,12 +82,12 @@ export declare class ChannelStartupService {
         isSaved: boolean;
         type: string;
         id: string;
-        pushName: string | null;
-        instanceId: string;
-        remoteJid: string;
-        profilePicUrl: string | null;
         createdAt: Date | null;
+        instanceId: string;
+        pushName: string | null;
         updatedAt: Date | null;
+        profilePicUrl: string | null;
+        remoteJid: string;
     }[]>;
     cleanMessageData(message: any): any;
     fetchMessages(query: Query<Message>): Promise<{
@@ -97,6 +97,7 @@ export declare class ChannelStartupService {
             currentPage: number;
             records: {
                 id: string;
+                instanceId: string;
                 message: Prisma.JsonValue;
                 key: Prisma.JsonValue;
                 pushName: string;
@@ -104,7 +105,6 @@ export declare class ChannelStartupService {
                 contextInfo: Prisma.JsonValue;
                 source: import(".prisma/client").$Enums.DeviceMessage;
                 messageTimestamp: number;
-                instanceId: string;
                 MessageUpdate: {
                     status: string;
                 }[];
@@ -113,22 +113,22 @@ export declare class ChannelStartupService {
     }>;
     fetchStatusMessage(query: any): Promise<{
         id: string;
-        participant: string | null;
+        messageId: string;
         instanceId: string;
+        participant: string | null;
         status: string;
         remoteJid: string;
-        fromMe: boolean;
         pollUpdates: Prisma.JsonValue | null;
+        fromMe: boolean;
         keyId: string;
-        messageId: string;
     }[]>;
     findChatByRemoteJid(remoteJid: string): Promise<{
         id: string;
-        name: string | null;
-        instanceId: string;
-        remoteJid: string;
         createdAt: Date | null;
+        instanceId: string;
+        name: string | null;
         updatedAt: Date | null;
+        remoteJid: string;
         labels: Prisma.JsonValue | null;
         unreadMessages: number;
     }>;

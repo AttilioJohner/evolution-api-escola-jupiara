@@ -6,8 +6,13 @@ export declare class S3Controller {
     constructor(s3Service: S3Service);
     getMedia(instance: InstanceDto, data: MediaDto): Promise<{
         id: string;
+        fileName: string;
+        type: string;
+        mimetype: string;
+        createdAt: Date;
         Message: {
             id: string;
+            instanceId: string;
             message: import("@prisma/client/runtime/library").JsonValue;
             key: import("@prisma/client/runtime/library").JsonValue;
             pushName: string | null;
@@ -21,20 +26,20 @@ export declare class S3Controller {
             chatwootConversationId: number | null;
             chatwootContactInboxSourceId: string | null;
             chatwootIsRead: boolean | null;
-            instanceId: string;
             webhookUrl: string | null;
             status: string | null;
             sessionId: string | null;
         };
-        createdAt: Date;
-        mimetype: string;
-        fileName: string;
-        type: string;
     }[]>;
     getMediaUrl(instance: InstanceDto, data: MediaDto): Promise<{
         id: string;
+        fileName: string;
+        type: string;
+        mimetype: string;
+        createdAt: Date;
         Message: {
             id: string;
+            instanceId: string;
             message: import("@prisma/client/runtime/library").JsonValue;
             key: import("@prisma/client/runtime/library").JsonValue;
             pushName: string | null;
@@ -48,15 +53,10 @@ export declare class S3Controller {
             chatwootConversationId: number | null;
             chatwootContactInboxSourceId: string | null;
             chatwootIsRead: boolean | null;
-            instanceId: string;
             webhookUrl: string | null;
             status: string | null;
             sessionId: string | null;
         };
-        createdAt: Date;
-        mimetype: string;
-        fileName: string;
-        type: string;
         mediaUrl: string;
     }>;
 }

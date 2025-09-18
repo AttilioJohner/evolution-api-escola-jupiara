@@ -28,6 +28,6 @@ export declare class ChannelController {
     get prisma(): PrismaRepository;
     set monitor(waMonitor: WAMonitoringService);
     get monitor(): WAMonitoringService;
-    init(instanceData: InstanceDto, data: ChannelDataType): BaileysStartupService | BusinessStartupService | EvolutionStartupService;
+    init(instanceData: InstanceDto, data: ChannelDataType): BusinessStartupService | EvolutionStartupService | BaileysStartupService;
 }
 export {};

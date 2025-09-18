@@ -84,10 +84,10 @@ export declare class ProxyController {
     }>;
     findProxy(instance: InstanceDto): Promise<{
         id: string;
-        instanceId: string;
         createdAt: Date | null;
-        updatedAt: Date;
+        instanceId: string;
         enabled: boolean;
+        updatedAt: Date;
         host: string;
         port: string;
         protocol: string;

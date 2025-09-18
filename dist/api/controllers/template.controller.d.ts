@@ -6,10 +6,10 @@ export declare class TemplateController {
     constructor(templateService: TemplateService);
     createTemplate(instance: InstanceDto, data: TemplateDto): Promise<{
         id: string;
-        name: string;
-        instanceId: string;
-        webhookUrl: string | null;
         createdAt: Date | null;
+        instanceId: string;
+        name: string;
+        webhookUrl: string | null;
         updatedAt: Date;
         template: import("@prisma/client/runtime/library").JsonValue;
         templateId: string;

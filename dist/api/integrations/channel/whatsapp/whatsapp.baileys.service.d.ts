@@ -335,6 +335,7 @@ export declare class BaileysStartupService extends ChannelStartupService {
             currentPage: number;
             records: {
                 id: string;
+                instanceId: string;
                 message: import("@prisma/client/runtime/library").JsonValue;
                 key: import("@prisma/client/runtime/library").JsonValue;
                 pushName: string;
@@ -342,7 +343,6 @@ export declare class BaileysStartupService extends ChannelStartupService {
                 contextInfo: import("@prisma/client/runtime/library").JsonValue;
                 source: import(".prisma/client").$Enums.DeviceMessage;
                 messageTimestamp: number;
-                instanceId: string;
                 MessageUpdate: {
                     status: string;
                 }[];
