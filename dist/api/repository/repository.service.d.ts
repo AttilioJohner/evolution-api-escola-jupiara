@@ -11,6 +11,5 @@ export declare class PrismaRepository extends PrismaClient {
     constructor(configService: ConfigService);
     private readonly logger;
     onModuleInit(): Promise<void>;
-    private connectWithFallback;
     onModuleDestroy(): Promise<void>;
 }
