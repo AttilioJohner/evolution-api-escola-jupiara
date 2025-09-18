@@ -109,7 +109,7 @@ import makeWASocket, {
   GroupMetadata,
   isJidBroadcast,
   isJidGroup,
-  isJidNewsletter,
+  // isJidNewsletter, // Removido - não existe na versão 6.7.0 do Baileys
   isJidUser,
   makeCacheableSignalKeyStore,
   MessageUpsertType,
@@ -343,7 +343,7 @@ export class BaileysStartupService extends ChannelStartupService {
 
       qrcode.toDataURL(qr, optsQrcode, (error, base64) => {
         if (error) {
-          this.logger.error('Qrcode generate failed:' + error instanceof Error ? error.message : String(error));
+          this.logger.error('Qrcode generate failed:' + (error instanceof Error ? error.message : String(error)));
           return;
         }
 
@@ -630,7 +630,7 @@ export class BaileysStartupService extends ChannelStartupService {
 
         const isGroupJid = this.localSettings.groupsIgnore && isJidGroup(jid);
         const isBroadcast = !this.localSettings.readStatus && isJidBroadcast(jid);
-        const isNewsletter = isJidNewsletter(jid);
+        const isNewsletter = jid?.includes('@newsletter'); // Substituição temporária para isJidNewsletter
 
         return isGroupJid || isBroadcast || isNewsletter;
       },
@@ -995,8 +995,8 @@ export class BaileysStartupService extends ChannelStartupService {
             continue;
           }
 
-          if (m.key.remoteJid?.includes('@lid') && m.key.senderPn) {
-            m.key.remoteJid = m.key.senderPn;
+          if (m.key.remoteJid?.includes('@lid') && m.key.participant) {
+            m.key.remoteJid = m.key.participant;
           }
 
           if (Long.isLong(m?.messageTimestamp)) {
@@ -1061,9 +1061,9 @@ export class BaileysStartupService extends ChannelStartupService {
     ) => {
       try {
         for (const received of messages) {
-          if (received.key.remoteJid?.includes('@lid') && received.key.senderPn) {
+          if (received.key.remoteJid?.includes('@lid') && received.key.participant) {
             (received.key as { previousRemoteJid?: string | null }).previousRemoteJid = received.key.remoteJid;
-            received.key.remoteJid = received.key.senderPn;
+            received.key.remoteJid = received.key.participant;
           }
           if (
             received?.messageStubParameters?.some?.((param) =>
@@ -1085,7 +1085,8 @@ export class BaileysStartupService extends ChannelStartupService {
             const text = received.message?.conversation || received.message?.extendedTextMessage?.text;
 
             if (text == 'requestPlaceholder' && !requestId) {
-              const messageId = await this.client.requestPlaceholderResend(received.key);
+              // const messageId = await this.client.requestPlaceholderResend(received.key); // Removido - não existe na versão 6.7.0
+              const messageId = null; // Retorno temporário
 
               console.log('requested placeholder resync, id=', messageId);
             } else if (requestId) {
@@ -1093,7 +1094,8 @@ export class BaileysStartupService extends ChannelStartupService {
             }
 
             if (text == 'onDemandHistSync') {
-              const messageId = await this.client.fetchMessageHistory(50, received.key, received.messageTimestamp!);
+              // const messageId = await this.client.fetchMessageHistory(50, received.key, received.messageTimestamp!); // Removido - não existe na versão 6.7.0
+              const messageId = null; // Retorno temporário
               console.log('requested on-demand sync, id=', messageId);
             }
           }
@@ -1420,8 +1422,8 @@ export class BaileysStartupService extends ChannelStartupService {
           continue;
         }
 
-        if (key.remoteJid?.includes('@lid') && key.senderPn) {
-          key.remoteJid = key.senderPn;
+        if (key.remoteJid?.includes('@lid') && key.participant) {
+          key.remoteJid = key.participant;
         }
 
         const updateKey = `${this.instance.id}_${key.id}_${update.status}`;
@@ -3332,8 +3334,8 @@ export class BaileysStartupService extends ChannelStartupService {
 
           const numberJid = numberVerified?.jid || user.jid;
           const lid =
-            typeof numberVerified?.lid === 'string'
-              ? numberVerified.lid
+            typeof (numberVerified as any)?.lid === 'string'
+              ? (numberVerified as any).lid
               : numberJid.includes('@lid')
                 ? numberJid.split('@')[1]
                 : undefined;
@@ -3598,12 +3600,24 @@ export class BaileysStartupService extends ChannelStartupService {
       let buffer: Buffer;
 
       try {
-        buffer = await downloadMediaMessage(
+        const mediaResult = await downloadMediaMessage(
           { key: msg?.key, message: msg?.message },
           'buffer',
           {},
           { logger: P({ level: 'error' }) as any, reuploadRequest: this.client.updateMediaMessage },
         );
+
+        // Garantir que sempre retorne Buffer
+        if (Buffer.isBuffer(mediaResult)) {
+          buffer = mediaResult;
+        } else {
+          // Se for Transform, converter para Buffer
+          const chunks: Buffer[] = [];
+          for await (const chunk of mediaResult as any) {
+            chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+          }
+          buffer = Buffer.concat(chunks);
+        }
       } catch (err) {
         this.logger.error('Download Media failed, trying to retry in 5 seconds...');
         await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -3700,7 +3714,7 @@ export class BaileysStartupService extends ChannelStartupService {
       await this.client.updateStatusPrivacy(settings.status);
       await this.client.updateOnlinePrivacy(settings.online);
       await this.client.updateLastSeenPrivacy(settings.last);
-      await this.client.updateGroupsAddPrivacy(settings.groupadd);
+      await this.client.updateGroupsAddPrivacy(settings.groupadd as any); // Cast necessário devido a mudanças nos tipos
 
       this.reloadConnection();
 
@@ -4491,11 +4505,12 @@ export class BaileysStartupService extends ChannelStartupService {
   }
 
   public async baileysCreateParticipantNodes(jids: string[], message: proto.IMessage, extraAttrs: any) {
-    const response = await this.client.createParticipantNodes(jids, message, extraAttrs);
+    // const response = await this.client.createParticipantNodes(jids, message, extraAttrs); // Removido - não existe na versão 6.7.0
+    const response = null; // Retorno temporário
 
     const convertedResponse = {
       ...response,
-      nodes: response.nodes.map((node: any) => ({
+      nodes: response?.nodes?.map((node: any) => ({
         ...node,
         content: node.content?.map((c: any) => ({
           ...c,
@@ -4515,7 +4530,8 @@ export class BaileysStartupService extends ChannelStartupService {
   }
 
   public async baileysGetUSyncDevices(jids: string[], useCache: boolean, ignoreZeroDevices: boolean) {
-    const response = await this.client.getUSyncDevices(jids, useCache, ignoreZeroDevices);
+    // const response = await this.client.getUSyncDevices(jids, useCache, ignoreZeroDevices); // Removido - não existe na versão 6.7.0
+    const response = {}; // Retorno temporário
 
     return response;
   }

@@ -1,0 +1,84 @@
+import { InstanceDto } from '@api/dto/instance.dto';
+import { SettingsDto } from '@api/dto/settings.dto';
+import { SettingsService } from '@api/services/settings.service';
+export declare class SettingsController {
+    private readonly settingsService;
+    constructor(settingsService: SettingsService);
+    createSettings(instance: InstanceDto, data: SettingsDto): Promise<{
+        settings: {
+            settings: SettingsDto;
+            instanceName: string;
+            instanceId?: string;
+            qrcode?: boolean;
+            businessId?: string;
+            number?: string;
+            integration?: string;
+            token?: string;
+            status?: string;
+            ownerJid?: string;
+            profileName?: string;
+            profilePicUrl?: string;
+            rejectCall?: boolean;
+            msgCall?: string;
+            groupsIgnore?: boolean;
+            alwaysOnline?: boolean;
+            readMessages?: boolean;
+            readStatus?: boolean;
+            syncFullHistory?: boolean;
+            wavoipToken?: string;
+            proxyHost?: string;
+            proxyPort?: string;
+            proxyProtocol?: string;
+            proxyUsername?: string;
+            proxyPassword?: string;
+            webhook?: {
+                enabled?: boolean;
+                events?: string[];
+                headers?: import("@prisma/client/runtime/library").JsonValue;
+                url?: string;
+                byEvents?: boolean;
+                base64?: boolean;
+            };
+            chatwootAccountId?: string;
+            chatwootConversationPending?: boolean;
+            chatwootAutoCreate?: boolean;
+            chatwootDaysLimitImportMessages?: number;
+            chatwootImportContacts?: boolean;
+            chatwootImportMessages?: boolean;
+            chatwootLogo?: string;
+            chatwootMergeBrazilContacts?: boolean;
+            chatwootNameInbox?: string;
+            chatwootOrganization?: string;
+            chatwootReopenConversation?: boolean;
+            chatwootSignMsg?: boolean;
+            chatwootToken?: string;
+            chatwootUrl?: string;
+            websocket?: {
+                enabled?: boolean;
+                events?: string[];
+            };
+            sqs?: {
+                enabled?: boolean;
+                events?: string[];
+            };
+            rabbitmq?: {
+                enabled?: boolean;
+                events?: string[];
+            };
+            nats?: {
+                enabled?: boolean;
+                events?: string[];
+            };
+            pusher?: {
+                enabled?: boolean;
+                appId?: string;
+                key?: string;
+                secret?: string;
+                cluster?: string;
+                useTLS?: boolean;
+                events?: string[];
+            };
+        };
+    }>;
+    findSettings(instance: InstanceDto): Promise<SettingsDto>;
+}

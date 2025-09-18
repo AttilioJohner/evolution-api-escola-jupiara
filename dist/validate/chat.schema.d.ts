@@ -1,0 +1,17 @@
+import { JSONSchema7 } from 'json-schema';
+export declare const whatsappNumberSchema: JSONSchema7;
+export declare const readMessageSchema: JSONSchema7;
+export declare const archiveChatSchema: JSONSchema7;
+export declare const markChatUnreadSchema: JSONSchema7;
+export declare const deleteMessageSchema: JSONSchema7;
+export declare const profilePictureSchema: JSONSchema7;
+export declare const updateMessageSchema: JSONSchema7;
+export declare const presenceSchema: JSONSchema7;
+export declare const blockUserSchema: JSONSchema7;
+export declare const contactValidateSchema: JSONSchema7;
+export declare const messageValidateSchema: JSONSchema7;
+export declare const messageUpSchema: JSONSchema7;
+export declare const privacySettingsSchema: JSONSchema7;
+export declare const profileNameSchema: JSONSchema7;
+export declare const profileStatusSchema: JSONSchema7;
+export declare const profileSchema: JSONSchema7;

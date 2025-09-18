@@ -2,7 +2,7 @@ import { Logger } from '@config/logger.config';
 import { BaileysEventMap, MessageUpsertType, proto } from 'baileys';
 import { catchError, concatMap, delay, EMPTY, from, retryWhen, Subject, Subscription, take, tap } from 'rxjs';
 
-type MessageUpsertPayload = BaileysEventMap['messages.upsert'];
+type MessageUpsertPayload = BaileysEventMap['messages.upsert'] & { requestId?: string };
 type MountProps = {
   onMessageReceive: (payload: MessageUpsertPayload, settings: any) => Promise<void>;
 };

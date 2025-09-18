@@ -1,0 +1,34 @@
+import { ProviderFiles } from '@api/provider/sessions';
+import { PrismaRepository } from '@api/repository/repository.service';
+import { ConfigService } from '@config/env.config';
+import EventEmitter2 from 'eventemitter2';
+import { CacheService } from './cache.service';
+export declare class WAMonitoringService {
+    private readonly eventEmitter;
+    private readonly configService;
+    private readonly prismaRepository;
+    private readonly providerFiles;
+    private readonly cache;
+    private readonly chatwootCache;
+    private readonly baileysCache;
+    constructor(eventEmitter: EventEmitter2, configService: ConfigService, prismaRepository: PrismaRepository, providerFiles: ProviderFiles, cache: CacheService, chatwootCache: CacheService, baileysCache: CacheService);
+    private readonly db;
+    private readonly redis;
+    private readonly logger;
+    readonly waInstances: Record<string, any>;
+    private readonly providerSession;
+    delInstanceTime(instance: string): void;
+    instanceInfo(instanceNames?: string[]): Promise<any>;
+    instanceInfoById(instanceId?: string, number?: string): Promise<any>;
+    cleaningUp(instanceName: string): Promise<void>;
+    cleaningStoreData(instanceName: string): Promise<void>;
+    loadInstance(): Promise<void>;
+    saveInstance(data: any): Promise<void>;
+    deleteInstance(instanceName: string): void;
+    private setInstance;
+    private loadInstancesFromRedis;
+    private loadInstancesFromDatabasePostgres;
+    private loadInstancesFromProvider;
+    private removeInstance;
+    private noConnection;
+}

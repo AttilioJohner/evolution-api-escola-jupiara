@@ -293,6 +293,7 @@ export interface Env {
   SSL_CONF: SslConf;
   PROVIDER: ProviderSession;
   DATABASE: Database;
+  DATABASE_ENABLED: string;
   RABBITMQ: Rabbitmq;
   NATS: Nats;
   SQS: Sqs;
@@ -388,6 +389,7 @@ export class ConfigService {
           LOGICAL_MESSAGE_DELETE: process.env?.DATABASE_DELETE_MESSAGE === 'true',
         },
       },
+      DATABASE_ENABLED: process.env?.DATABASE_ENABLED || 'true',
       RABBITMQ: {
         ENABLED: process.env?.RABBITMQ_ENABLED === 'true',
         GLOBAL_ENABLED: process.env?.RABBITMQ_GLOBAL_ENABLED === 'true',

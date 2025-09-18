@@ -26,7 +26,7 @@ import axios from 'axios';
 import { proto } from 'baileys';
 import dayjs from 'dayjs';
 import FormData from 'form-data';
-import { Jimp, JimpMime } from 'jimp';
+import Jimp from 'jimp'; // JimpMime removido - não existe na versão instalada
 import Long from 'long';
 import mimeTypes from 'mime-types';
 import path from 'path';
@@ -574,7 +574,7 @@ export class ChatwootService {
       return null;
     }
 
-    const isLid = body.key.previousRemoteJid?.includes('@lid') && body.key.senderPn;
+    const isLid = body.key.previousRemoteJid?.includes('@lid') && body.key.participant;
     const remoteJid = body.key.remoteJid;
     const cacheKey = `${instance.instanceName}:createConversation-${remoteJid}`;
     const lockKey = `${instance.instanceName}:lock:createConversation-${remoteJid}`;
@@ -582,19 +582,19 @@ export class ChatwootService {
 
     try {
       // Processa atualização de contatos já criados @lid
-      if (isLid && body.key.senderPn !== body.key.previousRemoteJid) {
+      if (isLid && body.key.participant !== body.key.previousRemoteJid) {
         const contact = await this.findContact(instance, body.key.remoteJid.split('@')[0]);
-        if (contact && contact.identifier !== body.key.senderPn) {
+        if (contact && contact.identifier !== body.key.participant) {
           this.logger.verbose(
-            `Identifier needs update: (contact.identifier: ${contact.identifier}, body.key.remoteJid: ${body.key.remoteJid}, body.key.senderPn: ${body.key.senderPn}`,
+            `Identifier needs update: (contact.identifier: ${contact.identifier}, body.key.remoteJid: ${body.key.remoteJid}, body.key.participant: ${body.key.participant}`,
           );
           const updateContact = await this.updateContact(instance, contact.id, {
-            identifier: body.key.senderPn,
-            phone_number: `+${body.key.senderPn.split('@')[0]}`,
+            identifier: body.key.participant,
+            phone_number: `+${body.key.participant.split('@')[0]}`,
           });
 
           if (updateContact === null) {
-            const baseContact = await this.findContact(instance, body.key.senderPn.split('@')[0]);
+            const baseContact = await this.findContact(instance, body.key.participant.split('@')[0]);
             if (baseContact) {
               await this.mergeContacts(baseContact.id, contact.id);
               this.logger.verbose(
@@ -2146,11 +2146,8 @@ export class ChatwootService {
           const fileData = Buffer.from(imgBuffer.data, 'binary');
 
           const img = await Jimp.read(fileData);
-          await img.cover({
-            w: 320,
-            h: 180,
-          });
-          const processedBuffer = await img.getBuffer(JimpMime.png);
+          await img.cover(320, 180);
+          const processedBuffer = await img.getBufferAsync('image/png'); // Era JimpMime.png
 
           const fileStream = new Readable();
           fileStream._read = () => {}; // _read is required but you can noop it

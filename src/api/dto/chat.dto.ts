@@ -1,7 +1,7 @@
 import {
   proto,
   WAPresence,
-  WAPrivacyGroupAddValue,
+  // WAPrivacyGroupAddValue, // Removido - não existe na versão 6.7.0 do Baileys
   WAPrivacyOnlineValue,
   WAPrivacyValue,
   WAReadReceiptsValue,
@@ -92,7 +92,7 @@ export class PrivacySettingDto {
   status: WAPrivacyValue;
   online: WAPrivacyOnlineValue;
   last: WAPrivacyValue;
-  groupadd: WAPrivacyGroupAddValue;
+  groupadd: string; // Era WAPrivacyGroupAddValue, mas não existe na versão 6.7.0
 }
 
 export class DeleteMessage {

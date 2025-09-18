@@ -1,0 +1,15 @@
+import { JSONSchema7 } from 'json-schema';
+export declare const templateMessageSchema: JSONSchema7;
+export declare const offerCallSchema: JSONSchema7;
+export declare const textMessageSchema: JSONSchema7;
+export declare const mediaMessageSchema: JSONSchema7;
+export declare const ptvMessageSchema: JSONSchema7;
+export declare const audioMessageSchema: JSONSchema7;
+export declare const statusMessageSchema: JSONSchema7;
+export declare const stickerMessageSchema: JSONSchema7;
+export declare const locationMessageSchema: JSONSchema7;
+export declare const contactMessageSchema: JSONSchema7;
+export declare const reactionMessageSchema: JSONSchema7;
+export declare const pollMessageSchema: JSONSchema7;
+export declare const listMessageSchema: JSONSchema7;
+export declare const buttonsMessageSchema: JSONSchema7;

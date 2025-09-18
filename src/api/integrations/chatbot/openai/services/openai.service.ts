@@ -669,7 +669,7 @@ export class OpenaiService extends BaseChatbotService<OpenaiBot, OpenaiSetting> 
       audio = Buffer.from(msg.message.base64, 'base64');
     } else {
       // Fallback for raw WhatsApp audio messages that need downloadMediaMessage
-      audio = await downloadMediaMessage(
+      const mediaResult = await downloadMediaMessage(
         { key: msg.key, message: msg?.message },
         'buffer',
         {},
@@ -678,6 +678,18 @@ export class OpenaiService extends BaseChatbotService<OpenaiBot, OpenaiSetting> 
           reuploadRequest: instance,
         },
       );
+
+      // Garantir que sempre retorne Buffer
+      if (Buffer.isBuffer(mediaResult)) {
+        audio = mediaResult;
+      } else {
+        // Se for Transform, converter para Buffer
+        const chunks: Buffer[] = [];
+        for await (const chunk of mediaResult as any) {
+          chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+        }
+        audio = Buffer.concat(chunks);
+      }
     }
 
     const lang = this.configService.get<Language>('LANGUAGE').includes('pt')

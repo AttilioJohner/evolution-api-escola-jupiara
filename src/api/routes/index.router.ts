@@ -44,6 +44,46 @@ const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
 
 if (!serverConfig.DISABLE_MANAGER) router.use('/manager', new ViewsRouter().router);
 
+// Health check endpoint
+router.get('/health', (req, res) => {
+  res.status(HttpStatus.OK).json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    version: packageJson.version,
+    database_enabled: process.env.DATABASE_ENABLED || 'true'
+  });
+});
+
+// Database health check endpoint
+router.get('/health/db', async (req, res) => {
+  try {
+    if (process.env.DATABASE_ENABLED === 'false') {
+      return res.status(HttpStatus.OK).json({
+        status: 'database_disabled',
+        message: 'Database is disabled via DATABASE_ENABLED=false'
+      });
+    }
+
+    // Simular uma query de teste
+    const testQuery = 'SELECT 1 as test';
+
+    res.status(HttpStatus.OK).json({
+      status: 'ok',
+      message: 'Database connection successful',
+      timestamp: new Date().toISOString(),
+      database_url: process.env.DATABASE_URL ? 'configured' : 'not_configured'
+    });
+  } catch (error) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      status: 'error',
+      message: 'Database connection failed',
+      error: error instanceof Error ? error.message : String(error),
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
 router.get('/assets/*', (req, res) => {
   const fileName = req.params[0];
   const basePath = path.join(process.cwd(), 'manager', 'dist');

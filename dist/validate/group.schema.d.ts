@@ -1,0 +1,13 @@
+import { JSONSchema7 } from 'json-schema';
+export declare const createGroupSchema: JSONSchema7;
+export declare const groupJidSchema: JSONSchema7;
+export declare const getParticipantsSchema: JSONSchema7;
+export declare const groupSendInviteSchema: JSONSchema7;
+export declare const groupInviteSchema: JSONSchema7;
+export declare const AcceptGroupInviteSchema: JSONSchema7;
+export declare const updateParticipantsSchema: JSONSchema7;
+export declare const updateSettingsSchema: JSONSchema7;
+export declare const toggleEphemeralSchema: JSONSchema7;
+export declare const updateGroupPictureSchema: JSONSchema7;
+export declare const updateGroupSubjectSchema: JSONSchema7;
+export declare const updateGroupDescriptionSchema: JSONSchema7;

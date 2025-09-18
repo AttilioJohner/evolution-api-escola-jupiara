@@ -1,0 +1,32 @@
+import { ArchiveChatDto, BlockUserDto, DeleteMessage, getBase64FromMediaMessageDto, MarkChatUnreadDto, NumberDto, PrivacySettingDto, ProfileNameDto, ProfilePictureDto, ProfileStatusDto, ReadMessageDto, SendPresenceDto, UpdateMessageDto, WhatsAppNumberDto } from '@api/dto/chat.dto';
+import { InstanceDto } from '@api/dto/instance.dto';
+import { Query } from '@api/repository/repository.service';
+import { WAMonitoringService } from '@api/services/monitor.service';
+import { Contact, Message, MessageUpdate } from '@prisma/client';
+export declare class ChatController {
+    private readonly waMonitor;
+    constructor(waMonitor: WAMonitoringService);
+    whatsappNumber({ instanceName }: InstanceDto, data: WhatsAppNumberDto): Promise<any>;
+    readMessage({ instanceName }: InstanceDto, data: ReadMessageDto): Promise<any>;
+    archiveChat({ instanceName }: InstanceDto, data: ArchiveChatDto): Promise<any>;
+    markChatUnread({ instanceName }: InstanceDto, data: MarkChatUnreadDto): Promise<any>;
+    deleteMessage({ instanceName }: InstanceDto, data: DeleteMessage): Promise<any>;
+    fetchProfilePicture({ instanceName }: InstanceDto, data: NumberDto): Promise<any>;
+    fetchProfile({ instanceName }: InstanceDto, data: NumberDto): Promise<any>;
+    fetchContacts({ instanceName }: InstanceDto, query: Query<Contact>): Promise<any>;
+    getBase64FromMediaMessage({ instanceName }: InstanceDto, data: getBase64FromMediaMessageDto): Promise<any>;
+    fetchMessages({ instanceName }: InstanceDto, query: Query<Message>): Promise<any>;
+    fetchStatusMessage({ instanceName }: InstanceDto, query: Query<MessageUpdate>): Promise<any>;
+    fetchChats({ instanceName }: InstanceDto, query: Query<Contact>): Promise<any>;
+    findChatByRemoteJid({ instanceName }: InstanceDto, remoteJid: string): Promise<any>;
+    sendPresence({ instanceName }: InstanceDto, data: SendPresenceDto): Promise<any>;
+    fetchPrivacySettings({ instanceName }: InstanceDto): Promise<any>;
+    updatePrivacySettings({ instanceName }: InstanceDto, data: PrivacySettingDto): Promise<any>;
+    fetchBusinessProfile({ instanceName }: InstanceDto, data: ProfilePictureDto): Promise<any>;
+    updateProfileName({ instanceName }: InstanceDto, data: ProfileNameDto): Promise<any>;
+    updateProfileStatus({ instanceName }: InstanceDto, data: ProfileStatusDto): Promise<any>;
+    updateProfilePicture({ instanceName }: InstanceDto, data: ProfilePictureDto): Promise<any>;
+    removeProfilePicture({ instanceName }: InstanceDto): Promise<any>;
+    updateMessage({ instanceName }: InstanceDto, data: UpdateMessageDto): Promise<any>;
+    blockUser({ instanceName }: InstanceDto, data: BlockUserDto): Promise<any>;
+}

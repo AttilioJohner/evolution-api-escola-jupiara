@@ -83,7 +83,8 @@ export const useVoiceCallsBaileys = async (
 
   socket.on('createParticipantNodes', async (jids, message, extraAttrs, callback) => {
     try {
-      const response = await baileys_sock.createParticipantNodes(jids, message, extraAttrs);
+      // const response = await baileys_sock.createParticipantNodes(jids, message, extraAttrs); // Removido - não existe na versão 6.7.0
+      const response = null; // Retorno temporário
 
       callback(response, true);
 
@@ -95,7 +96,8 @@ export const useVoiceCallsBaileys = async (
 
   socket.on('getUSyncDevices', async (jids, useCache, ignoreZeroDevices, callback) => {
     try {
-      const response = await baileys_sock.getUSyncDevices(jids, useCache, ignoreZeroDevices);
+      // const response = await baileys_sock.getUSyncDevices(jids, useCache, ignoreZeroDevices); // Removido - não existe na versão 6.7.0
+      const response = [] as any; // Retorno temporário como array
 
       callback(response);
 
